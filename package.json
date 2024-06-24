@@ -1,0 +1,19 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "package.json file for nmgPortfolio",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch server/index.js",
+    "build": "cd client && npm install && npm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": "v20.11.0"
+  }
+  
+}
