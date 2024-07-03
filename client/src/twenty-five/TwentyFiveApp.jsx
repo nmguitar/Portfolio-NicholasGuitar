@@ -161,8 +161,8 @@ class twoFiveFiveApp extends React.Component {
   }
   
   render() {
-    console.log("render state: ")
-    console.log(store.getState())
+    //console.log("render state: ")
+    //console.log(store.getState())
     
     return (
       <div id="twentyFiveContainer" >
