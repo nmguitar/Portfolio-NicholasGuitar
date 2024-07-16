@@ -3,9 +3,22 @@ import React from 'react';
 import TwentyFiveApp from './twenty-five/TwentyFiveApp';
 import CalculatorApp from './calculator/CalculatorApp.jsx';
 import TreeMapApp from './treemap/TreemapApp.jsx';
+import * as d3 from 'd3';
 import { goComp  } from './App-actions.js';
 import { connect } from 'react-redux';
 import store from './store.js';
+/*
+function HomePageApp() {
+  const [data, setData] = React.useState(null);
+      
+        React.useEffect(() => {
+          fetch("/api")
+            .then((res) => res.json())
+            .then((data) => setData(data.message));
+        }, []);
+
+*/    
+
 
 class HomePageApp extends React.Component {
   constructor(props) {
@@ -15,18 +28,8 @@ class HomePageApp extends React.Component {
     
 
   }
-    /*
-    const [data, setData] = React.useState(null);
-    
-      React.useEffect(() => {
-        fetch("/api")
-          .then((res) => res.json())
-          .then((data) => setData(data.message));
-      }, []);
-    */
-
-    
   render() {
+
     return (
       <div className="home-page-app">
         
@@ -54,7 +57,7 @@ class HomePageApp extends React.Component {
                     <span className="hiding-text">&lt; </span>React-Redux Calculator <span className="hiding-text">/&gt;</span>
                   </h2>
                 </a>
-                <a id="treemap" href='client/public/videoGameData.html'> 
+                <a id="treemap" className="project-tile" onClick={this.props.goTreeMap}> 
                   <img  alt="D3 Treemap" />
                   <h2>
                     <span className="hiding-text">&lt; </span>D3 Treemap <span className="hiding-text">/&gt;</span>
@@ -117,6 +120,7 @@ class comboApp extends React.Component {
     this.goHomeComp = this.goHomeComp.bind(this);
     this.goTwentyFive = this.goTwentyFive.bind(this);
     this.goCalculator = this.goCalculator.bind(this);
+    this.goTreeMap = this.goTreeMap.bind(this);
   }
 
   goHomeComp() {
@@ -137,6 +141,12 @@ class comboApp extends React.Component {
     }
   }
 
+  goTreeMap() {
+    if(this.props.rootReducer.displayComponent !== "treemap"){
+      this.props.changeComp('treemap')
+    }
+  }
+
   render() {
     console.log("render state: ")
     console.log(store.getState())
@@ -146,8 +156,8 @@ class comboApp extends React.Component {
         <header>
           <nav id="navbar">
             <ul>
-              <li>
-                <a href="#welcome-section" onClick={this.goHomeComp} >Home</a>
+              <li onClick={this.goHomeComp}>
+                <a href="#welcome-section"  >Home</a>
               </li> 
               <li>
                 <a href="#projects" >Work</a>
@@ -163,9 +173,15 @@ class comboApp extends React.Component {
             ? <TwentyFiveApp /> 
             : this.props.rootReducer.displayComponent === 'calculator'
               ? <CalculatorApp /> 
-              : <HomePageApp goTwentyFive={this.goTwentyFive} goCalculator={this.goCalculator} />
+              : this.props.rootReducer.displayComponent === 'treemap'
+                ? <TreeMapApp />
+                : <HomePageApp 
+                  goTwentyFive={this.goTwentyFive} 
+                  goCalculator={this.goCalculator} 
+                  goTreeMap={this.goTreeMap}
+                  />
         }
-        <TreeMapApp />
+        
         
       </div>
     )

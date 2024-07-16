@@ -142,7 +142,7 @@ header {
     color: #ff6600;
   }
 
-  #technical-doc:hover .hiding-text {
+  #treemap:hover .hiding-text {
     color: #ff6600;
   }
 
@@ -477,15 +477,25 @@ $backgroundColor: hsl(180, 100%, 20%);
 
 //treemap styles
 #treeMapContainer {
+  margin-top: 75px;
+  background-color: white;
+
   * {
     text-align: center;
   }
   a {
     text-decoration: none;
+    color: blue;
+    cursor: pointer;
   }
-  
+
+  p {
+    margin-bottom: 5px;
+  }
+
   svg {
     border: 0px solid black;
+    margin: 0px 0 10px 0;
   }
   
   .tooltip {
@@ -498,7 +508,8 @@ $backgroundColor: hsl(180, 100%, 20%);
     top: 0px;
     visibility: hidden;
     border-radius: 2px;
-    opacity: 1;
+    opacity: 0.95;
     font-size: 0.8em;
+    
   }
 }

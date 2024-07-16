@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import { axiosFetch } from './axiosFun.js'
 
 
-function VgTreeApp(
+function KsTreeApp(
   {
     width = 800,
     height = 650
@@ -12,13 +12,13 @@ function VgTreeApp(
 ) {
   const[rectData, setRectData] = useState([])
   const[loading, setLoading] = useState('still loading')
-  const apiUrl = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json'
+  const apiUrl = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/kickstarter-funding-data.json'
 
   const ref = useRef()
   
   useEffect(() => { 
 
-    const drawVgChart = async () => {
+    const drawChart = async () => {
       function nameStrArr(inStr) {
         let newStrArr = []
         let startThisWord = 0;
@@ -217,14 +217,14 @@ function VgTreeApp(
   
     setLoading('Loaded API data!')
     console.log('loading is: ' + loading)
-    drawVgChart();
+    drawChart();
   }, []);
   
   return (
-    <div id="vgTreeContainer" >
+    <div id="ksTreeContainer" >
       
-      <h1>Video Game Sales</h1>
-      <p>Top 100 Most Sold Video Games Grouped by Platform</p>
+      <h1>Kickstarter Pledges</h1>
+      <p>Top 100 Most Pledged Kickstarter Campaigns Grouped By Category</p>
       <div id="treeMap">
       {loading === 'still loading'
         ? <p>SVG Loading...</p>
@@ -239,4 +239,4 @@ function VgTreeApp(
 
 
 
-export default VgTreeApp;
+export default KsTreeApp;
