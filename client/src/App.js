@@ -1,115 +1,209 @@
-//import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import React from 'react';
-
-function App() {
+import TwentyFiveApp from './twenty-five/TwentyFiveApp';
+import CalculatorApp from './calculator/CalculatorApp.jsx';
+import TreeMapApp from './treemap/TreemapApp.jsx';
+import * as d3 from 'd3';
+import { goComp  } from './App-actions.js';
+import { connect } from 'react-redux';
+import store from './store.js';
+/*
+function HomePageApp() {
   const [data, setData] = React.useState(null);
+      
+        React.useEffect(() => {
+          fetch("/api")
+            .then((res) => res.json())
+            .then((data) => setData(data.message));
+        }, []);
 
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
-  
-  
-  return (
-    <div className="App">
-      <header>
-        <nav id="navbar">
-          <ul>
-            <li>
-              <a href="#welcome-section" >About</a>
-            </li> 
-            <li>
-              <a href="#projects" >Work</a>
-            </li>
-            <li>
-              <a href="#contact" >Contact</a>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <section id="welcome-section">
-          <h1>Hello :) I'm Nick Guitar</h1>
-          <h2>Web Developer</h2>
-          <h2>{/*!data ? "Loading..." : */data}</h2>
-        </section>
-        <div id="projects" >
-          <h1> Here's some of my work </h1>
-          <section id="project-tiles"> 
-              <a id="survey-form" class="project-tile"> 
-                {/*add better links when available https://www.freecodecamp.org/learn/2022/responsive-web-design/build-a-survey-form-project/build-a-survey-form 
-                testing...
-                */}
-                <img href="" alt="Survey Form" height="300px" />
-                <h2>
-                  <span class="hiding-text">&lt; </span>Survey Form <span class="hiding-text">/&gt;</span>
-                </h2>
-              </a>
-              <a id="tribute-page" > 
-                <img href="" alt="Tribute Page" />
-                <h2>
-                  <span class="hiding-text">&lt; </span>Tribute Page <span class="hiding-text">/&gt;</span>
-                </h2>
-              </a>
-              <a id="technical-doc" > 
-                <img href="" alt="Technical Documentation Page" />
-                <h2>
-                  <span class="hiding-text">&lt; </span>Technical Documentation Page <span class="hiding-text">/&gt;</span>
-                </h2>
-              </a>
-            
-              <a id="product-landing" > 
-                <img href="" alt="Product Landing Page" />
-                <h2>
-                  <span class="hiding-text">&lt; </span>Product Landing Page <span class="hiding-text">/&gt;</span>
+*/    
 
-                </h2>
-              </a>   
-          </section>
-          <h2 id="show-all">Show All</h2>
-        </div>
-        <section id="contact">
-          <h1>Let's work together!</h1>
-          <ul id="contact-links">
-            <a href="" >
-              <li id="github"><img alt="G" /> GitHub</li>
-            </a>
-            <a href="https://www.freecodecamp.org/nickguitar" id="profile-link" target="_blank" >
-              <li id="fcc" ><img alt="f" /> freeCodeCamp</li>
-            </a>
-            <a href="" >
-              <li id="email"><img alt="e" /> Email</li>
-            </a>
-            <a href="" >
-              <li id="phone"><img alt="P" /> Phone</li>
-            </a>
-          </ul>
-        </section>
-      </main>
-      <footer> {/* can add a footer at later date */}
 
-      </footer> 
-    {/* boilerplate react
+class HomePageApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
     
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    */}
-    </div>
-  );
+
+  }
+  render() {
+
+    return (
+      <div className="home-page-app">
+        
+        <main>
+          <section id="welcome-section">
+            <h1>Hello :) I'm Nick Guitar</h1>
+            <h2>Web Developer</h2>
+            {/*<h2>{!data ? "Loading..." : data}</h2>*/}
+          </section>
+          <div id="projects" >
+            <h1> Here's some of my work </h1>
+            <section className="project-tiles"> 
+                <a id="twenty-five" className="project-tile" onClick={this.props.goTwentyFive}> 
+                  {/*add better links when available https://www.freecodecamp.org/learn/2022/responsive-web-design/build-a-survey-form-project/build-a-survey-form 
+                  testing...
+                  */}
+                  <img alt="React-Redux 25 + 5 Timer" height="300px" />
+                  <h2>
+                    <span className="hiding-text">&lt; </span>React-Redux 25 + 5 Timer <span className="hiding-text">/&gt;</span>
+                  </h2>
+                </a>
+                <a id="calculator-tile" className="project-tile" onClick={this.props.goCalculator}> 
+                  <img alt="React-Redux Calculator" />
+                  <h2>
+                    <span className="hiding-text">&lt; </span>React-Redux Calculator <span className="hiding-text">/&gt;</span>
+                  </h2>
+                </a>
+                <a id="treemap" className="project-tile" onClick={this.props.goTreeMap}> 
+                  <img  alt="D3 Treemap" />
+                  <h2>
+                    <span className="hiding-text">&lt; </span>D3 Treemap <span className="hiding-text">/&gt;</span>
+  
+                  </h2>
+                </a>  
+                <a id="product-landing" > 
+                  <img  alt="Product Landing Page" />
+                  <h2>
+                    <span className="hiding-text">&lt; </span>D3 Choropleth Map <span className="hiding-text">/&gt;</span>
+  
+                  </h2>
+                </a> 
+                <a id="technical-doc" > 
+                  <img alt="Technical Documentation Page" />
+                  <h2>
+                    <span className="hiding-text">&lt; </span>Exercise Tracker <span className="hiding-text">/&gt;</span>
+                  </h2>
+                </a>
+                <a id="product-landing" > 
+                  <img  alt="Product Landing Page" />
+                  <h2>
+                    <span className="hiding-text">&lt; </span>PSQL Number Guessing Game <span className="hiding-text">/&gt;</span>
+  
+                  </h2>
+                </a> 
+            </section>
+            <h2 id="show-all">Show All</h2>
+          </div>
+          <section id="contact">
+            <h1>Let's work together!</h1>
+            <ul id="contact-links">
+              <a  >
+                <li id="github"><img alt="G" /> GitHub</li>
+              </a>
+              <a href="https://www.freecodecamp.org/nickguitar" id="profile-link" target="_blank" >
+                <li id="fcc" ><img alt="f" /> freeCodeCamp</li>
+              </a>
+              <a  >
+                <li id="email"><img alt="e" /> Email</li>
+              </a>
+              <a  >
+                <li id="phone"><img alt="P" /> Phone</li>
+              </a>
+            </ul>
+          </section>
+        </main>
+  
+      </div>
+    );
+  }
 }
+
+class comboApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+
+    this.goHomeComp = this.goHomeComp.bind(this);
+    this.goTwentyFive = this.goTwentyFive.bind(this);
+    this.goCalculator = this.goCalculator.bind(this);
+    this.goTreeMap = this.goTreeMap.bind(this);
+  }
+
+  goHomeComp() {
+    if(this.props.rootReducer.displayComponent !== "home"){
+      this.props.changeComp("home");
+    }
+  }
+
+  goTwentyFive() {
+    if(this.props.rootReducer.displayComponent !== "twentyFive"){
+      this.props.changeComp('twentyFive')
+    }
+  }
+
+  goCalculator() {
+    if(this.props.rootReducer.displayComponent !== "calculator"){
+      this.props.changeComp('calculator')
+    }
+  }
+
+  goTreeMap() {
+    if(this.props.rootReducer.displayComponent !== "treemap"){
+      this.props.changeComp('treemap')
+    }
+  }
+
+  render() {
+    console.log("render state: ")
+    console.log(store.getState())
+
+    return(
+      <div id="appContainer" >
+        <header>
+          <nav id="navbar">
+            <ul>
+              <li onClick={this.goHomeComp}>
+                <a href="#welcome-section"  >Home</a>
+              </li> 
+              <li>
+                <a href="#projects" >Work</a>
+              </li>
+              <li>
+                <a href="#contact" >Contact</a>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        
+        {this.props.rootReducer.displayComponent === 'twentyFive'
+            ? <TwentyFiveApp /> 
+            : this.props.rootReducer.displayComponent === 'calculator'
+              ? <CalculatorApp /> 
+              : this.props.rootReducer.displayComponent === 'treemap'
+                ? <TreeMapApp />
+                : <HomePageApp 
+                  goTwentyFive={this.goTwentyFive} 
+                  goCalculator={this.goCalculator} 
+                  goTreeMap={this.goTreeMap}
+                  />
+        }
+        
+        
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    rootReducer: {
+      displayComponent: state.displayComponent
+    }
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeComp: (component) => {
+      dispatch(goComp(component));
+    }
+  }
+}
+
+const App = connect(mapStateToProps, mapDispatchToProps)(comboApp);
 
 export default App;

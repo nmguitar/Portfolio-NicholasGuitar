@@ -11,7 +11,7 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 // Handle GET requests to /api route
 app.get("/api", (req, res) => {
     //test at url: http://localhost:3001/api
-    res.json({ message: "Hello from server!" });
+    res.json({ message: "Hello from node.js server!" });
   });
 
 app.listen(PORT, () => {
