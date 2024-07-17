@@ -3,6 +3,17 @@ import { useEffect, useState, useRef } from 'react';
 import * as d3 from 'd3';
 import { axiosFetch } from './axiosFun.js'
 
+function numberCommas(number) {
+  const numStr = number.toString();
+  const numStrLen = numStr.length;
+  let newNumStr = '' + numStr;
+
+  for(let i = numStr.length; i > -1; i-3){
+    newNumStr = numStr.slice(0, i - 3) + ',' + numStr.slice(i - 2, newNumStr.length)
+  }
+
+  return newNumStr;
+}
 
 function MvTreeApp(
   {
@@ -114,8 +125,8 @@ function MvTreeApp(
         .round(true)
         
       const rectsData = treeMapLayout(treeMapRoot).leaves()
-      console.log('rectsData in is: ')
-      console.log(rectsData)
+      //console.log('rectsData in is: ')
+      //console.log(rectsData)
     
       //object for adding appropriate colors to each rect
       let cateColorsObj = {}
@@ -146,7 +157,7 @@ function MvTreeApp(
       }
       const mouseMove = function(event, d) {
         toolTip
-          .html('Name: ' + d['data']['name'] + '<br/>Category: ' + d['data']['category'] + '<br/>Copies: ' + d['data']['value'] + ' Million')
+        .html('Name: ' + d['data']['name'] + '<br/>Category: ' + d['data']['category'] + '<br/>Ticket Sales: $' + d['data']['value'] )
           .style('top', (event.clientY - 25 + document.documentElement.scrollTop) + 'px')
           .style('left', (event.clientX +10) + 'px')
       }
@@ -216,7 +227,7 @@ function MvTreeApp(
     }
   
     setLoading('Loaded API data!')
-    console.log('loading is: ' + loading)
+    //console.log('loading is: ' + loading)
     drawChart();
   }, []);
   

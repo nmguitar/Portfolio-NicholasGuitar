@@ -7,6 +7,7 @@ import * as d3 from 'd3';
 import { goComp  } from './App-actions.js';
 import { connect } from 'react-redux';
 import store from './store.js';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 /*
 function HomePageApp() {
   const [data, setData] = React.useState(null);
@@ -26,7 +27,6 @@ class HomePageApp extends React.Component {
     this.state = {
     };
     
-
   }
   render() {
 
@@ -42,48 +42,48 @@ class HomePageApp extends React.Component {
           <div id="projects" >
             <h1> Here's some of my work </h1>
             <section className="project-tiles"> 
-                <a id="twenty-five" className="project-tile" onClick={this.props.goTwentyFive}> 
-                  {/*add better links when available https://www.freecodecamp.org/learn/2022/responsive-web-design/build-a-survey-form-project/build-a-survey-form 
-                  testing...
-                  */}
+              <Link to='twentyFive' id="twenty-five" className="project-tile">
+                {/*<a id="twenty-five" className="project-tile" onClick={this.props.goTwentyFive}>*/} 
                   <img alt="React-Redux 25 + 5 Timer" height="300px" />
                   <h2>
                     <span className="hiding-text">&lt; </span>React-Redux 25 + 5 Timer <span className="hiding-text">/&gt;</span>
                   </h2>
-                </a>
-                <a id="calculator-tile" className="project-tile" onClick={this.props.goCalculator}> 
-                  <img alt="React-Redux Calculator" />
-                  <h2>
-                    <span className="hiding-text">&lt; </span>React-Redux Calculator <span className="hiding-text">/&gt;</span>
-                  </h2>
-                </a>
-                <a id="treemap" className="project-tile" onClick={this.props.goTreeMap}> 
-                  <img  alt="D3 Treemap" />
-                  <h2>
-                    <span className="hiding-text">&lt; </span>D3 Treemap <span className="hiding-text">/&gt;</span>
-  
-                  </h2>
-                </a>  
-                <a id="product-landing" > 
-                  <img  alt="Product Landing Page" />
-                  <h2>
-                    <span className="hiding-text">&lt; </span>D3 Choropleth Map <span className="hiding-text">/&gt;</span>
-  
-                  </h2>
-                </a> 
-                <a id="technical-doc" > 
-                  <img alt="Technical Documentation Page" />
-                  <h2>
-                    <span className="hiding-text">&lt; </span>Exercise Tracker <span className="hiding-text">/&gt;</span>
-                  </h2>
-                </a>
-                <a id="product-landing" > 
-                  <img  alt="Product Landing Page" />
-                  <h2>
-                    <span className="hiding-text">&lt; </span>PSQL Number Guessing Game <span className="hiding-text">/&gt;</span>
-  
-                  </h2>
-                </a> 
+                {/*</a>*/}
+              </Link>
+              <Link to='calculator' id="calculator-tile" className="project-tile" onClick={this.props.goCalculator}> 
+                <img alt="React-Redux Calculator" />
+                <h2>
+                  <span className="hiding-text">&lt; </span>React-Redux Calculator <span className="hiding-text">/&gt;</span>
+                </h2>
+              </Link>
+              <Link to='treemap' id="treemap" className="project-tile" onClick={this.props.goTreeMap}> 
+                <img  alt="D3 Treemap" />
+                <h2>
+                  <span className="hiding-text">&lt; </span>D3 Treemap <span className="hiding-text">/&gt;</span>
+
+                </h2>
+              </Link>  
+
+              <a id="number-guessing" > 
+                <img alt="Number Guessing Game" />
+                <h2>
+                  <span className="hiding-text">&lt; </span>PSQL Number Guessing Game <span className="hiding-text">/&gt;</span>
+
+                </h2>
+              </a>
+              <a id="exercise-tracker" > 
+                <img alt="Exercise Tracker" />
+                <h2>
+                  <span className="hiding-text">&lt; </span>Node.js Exercise Tracker <span className="hiding-text">/&gt;</span>
+                </h2>
+              </a>
+              <a id="choropleth" > 
+                <img alt="D3 Choropleth Map" />
+                <h2>
+                  <span className="hiding-text">&lt; </span>D3 Choropleth Map <span className="hiding-text">/&gt;</span>
+
+                </h2>
+              </a>  
             </section>
             <h2 id="show-all">Show All</h2>
           </div>
@@ -150,40 +150,55 @@ class comboApp extends React.Component {
   render() {
     console.log("render state: ")
     console.log(store.getState())
-
+    const navLinkStyle = {
+            padding: 0,
+            margin: 0
+          }
     return(
-      <div id="appContainer" >
-        <header>
-          <nav id="navbar">
-            <ul>
-              <li onClick={this.goHomeComp}>
-                <a href="#welcome-section"  >Home</a>
-              </li> 
-              <li>
-                <a href="#projects" >Work</a>
-              </li>
-              <li>
-                <a href="#contact" >Contact</a>
-              </li>
-            </ul>
-          </nav>
-        </header>
-        
-        {this.props.rootReducer.displayComponent === 'twentyFive'
-            ? <TwentyFiveApp /> 
-            : this.props.rootReducer.displayComponent === 'calculator'
-              ? <CalculatorApp /> 
-              : this.props.rootReducer.displayComponent === 'treemap'
-                ? <TreeMapApp />
-                : <HomePageApp 
-                  goTwentyFive={this.goTwentyFive} 
-                  goCalculator={this.goCalculator} 
-                  goTreeMap={this.goTreeMap}
-                  />
-        }
-        
-        
-      </div>
+      
+
+      <Router>
+        <div id="appContainer" >
+          <header>
+            <nav id="navbar">
+              <ul>
+                
+                  <li onClick={this.goHomeComp}>
+                    <Link to='/'>Home</Link>
+                  </li> 
+                
+                <li>
+                  <a href="#projects" >Work</a>
+                </li>
+                <li>
+                  <a href="#contact" >Contact</a>
+                </li>
+              </ul>
+            </nav>
+          </header>
+
+          <Routes>
+            <Route path='/' element={ <HomePageApp/> }/>
+            <Route path='twentyFive' element={ <TwentyFiveApp/> }/>
+            <Route path='calculator' element={ <CalculatorApp/> }/>
+            <Route path='treemap' element={ <TreeMapApp/> }/>
+          </Routes>
+          
+          {/*this.props.rootReducer.displayComponent === 'twentyFive'
+              ? <TwentyFiveApp /> 
+              : this.props.rootReducer.displayComponent === 'calculator'
+                ? <CalculatorApp /> 
+                : this.props.rootReducer.displayComponent === 'treemap'
+                  ? <TreeMapApp />
+                  : <HomePageApp 
+                    goTwentyFive={this.goTwentyFive} 
+                    goCalculator={this.goCalculator} 
+                    goTreeMap={this.goTreeMap}
+                    />
+          */}
+          
+        </div>
+      </Router>
     )
   }
 }

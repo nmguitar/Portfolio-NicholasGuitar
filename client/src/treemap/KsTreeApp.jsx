@@ -114,8 +114,8 @@ function KsTreeApp(
         .round(true)
         
       const rectsData = treeMapLayout(treeMapRoot).leaves()
-      console.log('rectsData in is: ')
-      console.log(rectsData)
+      //console.log('rectsData in is: ')
+      //console.log(rectsData)
     
       //object for adding appropriate colors to each rect
       let cateColorsObj = {}
@@ -146,7 +146,7 @@ function KsTreeApp(
       }
       const mouseMove = function(event, d) {
         toolTip
-          .html('Name: ' + d['data']['name'] + '<br/>Category: ' + d['data']['category'] + '<br/>Copies: ' + d['data']['value'] + ' Million')
+          .html('Name: ' + d['data']['name'] + '<br/>Category: ' + d['data']['category'] + '<br/>Pledge Value: $' + d['data']['value'])
           .style('top', (event.clientY - 25 + document.documentElement.scrollTop) + 'px')
           .style('left', (event.clientX +10) + 'px')
       }
@@ -216,7 +216,7 @@ function KsTreeApp(
     }
   
     setLoading('Loaded API data!')
-    console.log('loading is: ' + loading)
+    //console.log('loading is: ' + loading)
     drawChart();
   }, []);
   

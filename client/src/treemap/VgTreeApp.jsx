@@ -114,8 +114,8 @@ function VgTreeApp(
         .round(true)
         
       const rectsData = treeMapLayout(treeMapRoot).leaves()
-      console.log('rectsData in is: ')
-      console.log(rectsData)
+      //console.log('rectsData in is: ')
+      //console.log(rectsData)
     
       //object for adding appropriate colors to each rect
       let cateColorsObj = {}
@@ -216,7 +216,7 @@ function VgTreeApp(
     }
   
     setLoading('Loaded API data!')
-    console.log('loading is: ' + loading)
+    //console.log('loading is: ' + loading)
     drawVgChart();
   }, []);
   
