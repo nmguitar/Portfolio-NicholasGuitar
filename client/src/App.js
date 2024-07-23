@@ -3,6 +3,7 @@ import React from 'react';
 import TwentyFiveApp from './twenty-five/TwentyFiveApp';
 import CalculatorApp from './calculator/CalculatorApp.jsx';
 import TreeMapApp from './treemap/TreemapApp.jsx';
+import ExerciseTrackerApp from './exercise-tracker/ExerciseTrackerApp.jsx'
 import * as d3 from 'd3';
 import { goComp  } from './App-actions.js';
 import { connect } from 'react-redux';
@@ -63,6 +64,12 @@ class HomePageApp extends React.Component {
 
                 </h2>
               </Link>  
+              <Link to='exercise' className='project-tile' id="exercise-tracker" > 
+                <img alt="Exercise Tracker" />
+                <h2>
+                  <span className="hiding-text">&lt; </span>Node.js Exercise Tracker <span className="hiding-text">/&gt;</span>
+                </h2>
+              </Link>
 
               <a id="number-guessing" > 
                 <img alt="Number Guessing Game" />
@@ -71,12 +78,7 @@ class HomePageApp extends React.Component {
 
                 </h2>
               </a>
-              <a id="exercise-tracker" > 
-                <img alt="Exercise Tracker" />
-                <h2>
-                  <span className="hiding-text">&lt; </span>Node.js Exercise Tracker <span className="hiding-text">/&gt;</span>
-                </h2>
-              </a>
+              
               <a id="choropleth" > 
                 <img alt="D3 Choropleth Map" />
                 <h2>
@@ -158,15 +160,21 @@ class comboApp extends React.Component {
       
 
       <Router>
+        <Routes>
+          <Route path='/' element={ <HomePageApp/> }/>
+          <Route path='twentyFive' element={ <TwentyFiveApp/> }/>
+          <Route path='calculator' element={ <CalculatorApp/> }/>
+          <Route path='treemap' element={ <TreeMapApp/> }/>
+          <Route path='exercise' element={ <ExerciseTrackerApp /> }/>
+        </Routes>
+        
         <div id="appContainer" >
           <header>
             <nav id="navbar">
               <ul>
-                
-                  <li onClick={this.goHomeComp}>
-                    <Link to='/'>Home</Link>
-                  </li> 
-                
+                <li >
+                  <Link to='/'>Home</Link>
+                </li> 
                 <li>
                   <a href="#projects" >Work</a>
                 </li>
@@ -177,28 +185,13 @@ class comboApp extends React.Component {
             </nav>
           </header>
 
-          <Routes>
-            <Route path='/' element={ <HomePageApp/> }/>
-            <Route path='twentyFive' element={ <TwentyFiveApp/> }/>
-            <Route path='calculator' element={ <CalculatorApp/> }/>
-            <Route path='treemap' element={ <TreeMapApp/> }/>
-          </Routes>
+         
           
-          {/*this.props.rootReducer.displayComponent === 'twentyFive'
-              ? <TwentyFiveApp /> 
-              : this.props.rootReducer.displayComponent === 'calculator'
-                ? <CalculatorApp /> 
-                : this.props.rootReducer.displayComponent === 'treemap'
-                  ? <TreeMapApp />
-                  : <HomePageApp 
-                    goTwentyFive={this.goTwentyFive} 
-                    goCalculator={this.goCalculator} 
-                    goTreeMap={this.goTreeMap}
-                    />
-          */}
+          
           
         </div>
       </Router>
+      
     )
   }
 }
