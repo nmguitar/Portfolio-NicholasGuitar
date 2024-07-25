@@ -28,13 +28,15 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
   const userSchema = new mongoose.Schema({
     username: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     }
   })
 
   const User = mongoose.model('User', userSchema)
 
   //exerciseSchema established
+  //made date required and duration not required since passing FCC tests
   const exerciseSchema = new mongoose.Schema({
     username: {
       type: String,
@@ -46,9 +48,12 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
     },
     duration: {
       type: Number,
-      required: true
+      required: false
     },
-    date: String
+    date: {
+      type: String,
+      required: true
+    }
   })
 
   const Exercise = mongoose.model("Exercise", exerciseSchema)
@@ -65,7 +70,7 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 
       return goodDateFrmt
     } else {
-      const goodDateFrmt = new Date(submitDate).toDateString()
+      const goodDateFrmt = new Date(submitDate.replace(/-/g, '/')).toDateString()
       console.log(goodDateFrmt + ' is the entered date')
       return goodDateFrmt;
     }
@@ -80,23 +85,27 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 
     try {
       await newUser.save();
-      console.log('New user saved: ' + newUserName)
-    } catch(error) {
-      console.error(error)
-    }
-
-    res.json({
+      //console.log('New user saved: ' + newUserName)
+      res.json({
       username: newUser['username'],
       _id: newUser['_id']
-    })
+      })
+    } catch(error) {
+      console.error(error)
+      res.json({error: "Username taken"})
+    }
+
+    
   });
 
-  //call user list via url bar
+  //call user list via url bar or with axios/fetch within useEffect
   app.get('/api/users', async function(req, res){
-    const userList = await User.find().select('-_id -__v')
+    const userList = await User.find().select('-__v')
     res.json(userList)
   });
 
+  //delete all user and exercise data
+  /*
   app.get('/api/delete', async function(req, res){
     
     //holy crap this deletes all users be careful!
@@ -106,15 +115,19 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
     const userList = await User.find().lean()
     res.json(userList)
   });
+  */
 
   //throw an error if no id provided to add exercises post, causing below
   //path to be called
+  /*
   app.get('/api/users/exercises', function(req, res){
     res.json({error: 'Please provide Id'})
   })
+  */
 
   //function for identifying whether to use the form id field or id in url
   //may be unneccessary, delete when confirmed
+  /*
   function goodId(formId, urlId){
     if(formId == undefined){
       return urlId
@@ -122,14 +135,15 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
       return formId
     }
   }
+  */
 
   //function for paring down a users exercise log via from/to/limit queries
   function smallExLog(largeExLog, fromDay, toDay, limitInt){
     let newExLog = [];
-    console.log('largeExLog is: ' + largeExLog)
-    console.log(
+    //console.log('largeExLog is: ' + largeExLog)
+    /*console.log(
       'fromDay is: ' + fromDay + ' and toDay is: ' + toDay
-      + ' and limitInt is ' + limitInt)
+      + ' and limitInt is ' + limitInt)*/
     
 
     for(let i = 0; i < largeExLog.length; i++){
@@ -144,42 +158,51 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
       }else if(new Date(largeExLog[i]['date']).toISOString() >= fromDay && 
       new Date(largeExLog[i]['date']).toISOString() <= toDay){
         newExLog.push(largeExLog[i])
-        console.log(
+        /*console.log(
           new Date(largeExLog[i]['date']).toISOString()
           + ' is added to new exercise log'
-        )
+        )*/
 
       } else {
-        console.log(
+        /*console.log(
           new Date(largeExLog[i]['date']).toISOString()
           + ' not added to new exercise log'
-        )
+        )*/
       }
     }
 
     return newExLog;
   }
 
-  
+  //new after FCC tests - get exercise log via username field + submit button
+  app.get('/api/users/exercises', async function(req, res){
+    let userName = req.query.username;
+    //console.log('username is: ' + userName)
+    const exList = await Exercise.find({username: userName}).select({_id: 0, __v: 0})
+    //console.log(exList)
+    res.json(exList)
+  });
+
   //create new exercise log entry via form/submit
-  app.post('/api/users/:_id/exercises', async function(req, res){
-    const { _id } = req.params;
+  app.post('/api/users/exercises', async function(req, res){
+    //const { _id } = req.params;
     
-    console.log(_id + ' is the word fed in through url bar')
-    console.log('Heres- req.body[_id]: ' + req.body[':_id']
+    //console.log(_id + ' is the word fed in through url bar')
+    console.log('Heres- req.body[username]: ' + req.body['username']
       + ', req.body.date: ' + req.body.date
     )
     
-      const userId = _id;
+      //const userId = req.body[':_id'];//_id; for some reason didnt like params version
       const exDesc = req.body.description;
       const exDur = req.body.duration;
-      const idUser = await User.find({_id: userId}).lean()
+      const usName = req.body.username;
+      //const idUser = await User.find({_id: userId}).lean()
       const exDate = exerciseDate(req.body.date)
       
 
 
       const newExercise = new Exercise({
-        username: idUser[0]['username'],
+        username: usName, //[0]['username'],
         description: exDesc,
         duration: exDur,
         date: exDate
@@ -188,33 +211,35 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
       try {
         await newExercise.save();
         console.log('New exercise saved: ' + exDesc)
+        res.json({
+          //_id: idUser[0]['_id'],newExercise['_id']
+          username: usName,//idUser[0]['username'],newExercise['username'],
+          date: newExercise['date'],
+          duration: newExercise['duration'],
+          description: newExercise['description']
+        })
       } catch(error) {
         console.error(error)
+        res.json({error: "Please populate all required fields correctly"})
       }
 
-      res.json({
-        _id: idUser[0]['_id'],//newExercise['_id']
-        username: idUser[0]['username'],//newExercise['username'],
-        date: newExercise['date'],
-        duration: newExercise['duration'],
-        description: newExercise['description']
-      })
+
     //}
   })
 
   //user log of all exercises performed GET function
-  app.get('/api/users/:_id/logs', async function(req, res){
-    const { _id } = req.params;
+  app.get('/api/users/:username/logs', async function(req, res){
+    const { username } = req.params;
     
     const fromDate = req.query.from;
     const toDate = req.query.to;
     const limitNum = req.query.limit;
 
-    const userName = await User.find({_id: _id}).lean()
+    //const userName = username//await User.find({_id: _id}).lean()
 
     const bigExLog = await Exercise
     .find({
-      username: userName[0]['username']
+      username: username//userName[0]['username']
     })
     .select({_id: 0, username: 0, __v: 0})
     .lean()
@@ -230,8 +255,8 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
     const goodExLog = smallExLog(bigExLog, fromDate, toDate, limitNum)
 
     res.json({
-      _id: _id,
-      username: userName[0]['username'],
+      //_id: _id,
+      username: username,//userName[0]['username'],
       count: goodExLog.length,
       log: goodExLog
     })

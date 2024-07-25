@@ -6,7 +6,7 @@ import { faArrowUp, faArrowDown, faPlay, faPause, faRotate } from "@fortawesome/
 import React from 'react';
 import { connect } from 'react-redux';
 import { sessChg, brkChg, playPause, resetPress, minuteChg, secondChg, brkSess  } from './twenty-five-actions.js';
-import store from '../store.js';
+//import store from '../store.js';
 
 function twoDigStrDelta(str, dec){
   let tempNum = 0;
@@ -43,12 +43,12 @@ class twoFiveFiveApp extends React.Component {
   }
 
   breakDec() {
-    if(this.props.rootReducer.playStatus == "playing"){
+    if(this.props.rootReducer.playStatus === "playing"){
     } else {
       let currentBreakLen = this.props.rootReducer.breakLength;
       if(currentBreakLen > 1){
         this.props.breakChange(currentBreakLen - 1);
-        if(this.props.rootReducer.breakStatus == "Break"){
+        if(this.props.rootReducer.breakStatus === "Break"){
           let newMinStr = twoDigStrDelta(("" + this.props.rootReducer.breakLength), 1)
           this.props.minuteChange(newMinStr);
           this.props.secondChange('00');
@@ -58,12 +58,12 @@ class twoFiveFiveApp extends React.Component {
   }
 
   breakInc() {
-    if(this.props.rootReducer.playStatus == "playing"){
+    if(this.props.rootReducer.playStatus === "playing"){
     } else {
       let currentBreakLen = this.props.rootReducer.breakLength;
       if(currentBreakLen < 60){
         this.props.breakChange(currentBreakLen + 1);
-        if(this.props.rootReducer.breakStatus == "Break"){
+        if(this.props.rootReducer.breakStatus === "Break"){
           let newMinStr = twoDigStrDelta(("" + this.props.rootReducer.breakLength), -1)
           this.props.minuteChange(newMinStr);
           this.props.secondChange('00');
@@ -73,12 +73,12 @@ class twoFiveFiveApp extends React.Component {
   }
 
   sessionDec() {
-    if(this.props.rootReducer.playStatus == "playing"){
+    if(this.props.rootReducer.playStatus === "playing"){
     } else {
       let currentSessionLen = this.props.rootReducer.sessionLength;
       if(currentSessionLen > 1){
         this.props.sessionChange(currentSessionLen - 1);
-        if(this.props.rootReducer.breakStatus == "Session"){
+        if(this.props.rootReducer.breakStatus === "Session"){
           let newMinStr = twoDigStrDelta(("" + this.props.rootReducer.sessionLength), 1)
           this.props.minuteChange(newMinStr);
           this.props.secondChange('00');
@@ -88,12 +88,12 @@ class twoFiveFiveApp extends React.Component {
   }
   
   sessionInc() {
-    if(this.props.rootReducer.playStatus == "playing"){
+    if(this.props.rootReducer.playStatus === "playing"){
     } else {
       let currentSessionLen = this.props.rootReducer.sessionLength;
       if(currentSessionLen < 60){
         this.props.sessionChange(currentSessionLen + 1);
-        if(this.props.rootReducer.breakStatus == "Session"){
+        if(this.props.rootReducer.breakStatus === "Session"){
           let newMinStr = twoDigStrDelta(("" + this.props.rootReducer.sessionLength), -1)
           this.props.minuteChange(newMinStr);
           this.props.secondChange('00');
@@ -104,7 +104,7 @@ class twoFiveFiveApp extends React.Component {
   }
 
   playPause() {
-    if(this.props.rootReducer.playStatus == "paused"){
+    if(this.props.rootReducer.playStatus === "paused"){
       this.props.playPause("playing");
     } else {
       this.props.playPause("paused");
@@ -112,7 +112,7 @@ class twoFiveFiveApp extends React.Component {
   }
 
   resetPress() {
-    if(this.props.rootReducer.playStatus == "playing"){
+    if(this.props.rootReducer.playStatus === "playing"){
       this.props.playPause("paused");
     }
     this.props.resetPress("reset")
@@ -128,11 +128,11 @@ class twoFiveFiveApp extends React.Component {
   componentDidUpdate(){
     console.log("componentDidUpdate!");
     setTimeout(() => {
-      if(this.props.rootReducer.playStatus == "playing"){
-        if(this.props.rootReducer.timerMinutes == "00" && this.props.rootReducer.timerSeconds == "00"){
+      if(this.props.rootReducer.playStatus === "playing"){
+        if(this.props.rootReducer.timerMinutes === "00" && this.props.rootReducer.timerSeconds === "00"){
           //play audio somewaysomehow when this time is hit
           this.playBeep();
-          if(this.props.rootReducer.breakStatus == "Session"){
+          if(this.props.rootReducer.breakStatus === "Session"){
             let newMinStr = twoDigStrDelta(("" + this.props.rootReducer.breakLength), 0)
             this.props.minuteChange(newMinStr);
             this.props.breakSessionFlip("Break");
@@ -144,7 +144,7 @@ class twoFiveFiveApp extends React.Component {
           
         } else {
           
-            if(this.props.rootReducer.timerSeconds == "00") {
+            if(this.props.rootReducer.timerSeconds === "00") {
                 let newMinStr = twoDigStrDelta(this.props.rootReducer.timerMinutes, 1);
                 //console.log(newMinStr)
                 this.props.minuteChange(newMinStr);

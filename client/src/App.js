@@ -4,6 +4,7 @@ import TwentyFiveApp from './twenty-five/TwentyFiveApp';
 import CalculatorApp from './calculator/CalculatorApp.jsx';
 import TreeMapApp from './treemap/TreemapApp.jsx';
 import ExerciseTrackerApp from './exercise-tracker/ExerciseTrackerApp.jsx'
+import NodeResponse from './node-response/NodeResponse.jsx'
 import * as d3 from 'd3';
 import { goComp  } from './App-actions.js';
 import { connect } from 'react-redux';
@@ -166,6 +167,8 @@ class comboApp extends React.Component {
           <Route path='calculator' element={ <CalculatorApp/> }/>
           <Route path='treemap' element={ <TreeMapApp/> }/>
           <Route path='exercise' element={ <ExerciseTrackerApp /> }/>
+          <Route path='exercise/api/users' element={ <NodeResponse /> }/>
+          <Route path='exercise/api/users/:username/logs' element={ <NodeResponse /> }/>
         </Routes>
         
         <div id="appContainer" >
